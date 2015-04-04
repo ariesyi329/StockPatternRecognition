@@ -45,7 +45,7 @@ def main(option):
     se.evaluate_matrix(test_y,predicted)
 
 if __name__ == "__main__":
-    main("volume")
+    main("return rate")
 
 
 
