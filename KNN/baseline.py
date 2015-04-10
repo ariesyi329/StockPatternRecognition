@@ -39,8 +39,8 @@ def baseline_model(X_train,y_train,X_test,y_test):
 def main(option):
     d1 = datetime.datetime(2005, 1, 1)
     d2 = datetime.datetime(2014, 12, 31)
-    train_X,train_y = baseline_data("train",d1,d2,option)
-    test_X,test_y = baseline_data("test",d1,d2,option)
+    train_X,train_y = baseline_data("training",d1,d2,option)
+    test_X,test_y = baseline_data("validation",d1,d2,option)
     predicted = baseline_model(train_X, train_y, test_X, test_y)
     se.evaluate_matrix(test_y,predicted)
 
