@@ -178,6 +178,13 @@ def get_sequential_data(daily_data, days, option):
                 
     return results
 
+def normalize_data(data):
+    data_mean = data.mean(axis=1)
+    data_std = data.std(axis=1)
+    data_mean = data_mean.reshape(len(data_mean),1)
+    data_std = data_std.reshape(len(data_std),1)
+    normalized_data = ((data-data_mean)/data_std)
+    return normalized_data
 
 
 
