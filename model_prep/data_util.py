@@ -22,8 +22,9 @@ def load_ticker_data(dataset):
     IT = list(pd.read_csv('../tickers/Information Technology_{}.txt'.format(dataset),header=None)[0])
     C = list(pd.read_csv('../tickers/Consumer Discretionary_{}.txt'.format(dataset),header=None)[0])
     I = list(pd.read_csv('../tickers/Industrials_{}.txt'.format(dataset),header=None)[0])
-    
-    return F, IT, C, I
+    tickers = np.array(F+IT+C+I)
+    tickers = tickers.reshape(len(tickers),1)
+    return F, IT, C, I, tickers
 
 
 #construct y labels
@@ -46,7 +47,7 @@ def construct_y(F,IT,C,I):
     
     return F_y, IT_y, C_y, I_y
 
-def shuffle_data(X,y):
+def shuffle_data(X,y,tickers):
 
     """
     Args:
@@ -58,17 +59,19 @@ def shuffle_data(X,y):
     """
 
     data = np.concatenate((X,y),axis=1)
+    data = np.concatenate((data,tickers),axis=1)
     np.random.shuffle(data)
     return data
 
-def finalize_data(F_X, IT_X, C_X, I_X, F_y, IT_y, C_y, I_y):
+def finalize_data(F_X, IT_X, C_X, I_X, F_y, IT_y, C_y, I_y,tickers):
 
     X = np.concatenate((F_X,IT_X,C_X,I_X),axis=0) 
     y = np.concatenate((F_y,IT_y,C_y,I_y),axis=0)
-    data = shuffle_data(X,y)
-    X = data[:,:-1]
-    y = data[:,-1]
+    data = shuffle_data(X,y,tickers)
+    X = data[:,:-2]
+    y = data[:,-2]
+    z = data[:,-1]
 
-    return X, y
+    return X, y,z
 
 

@@ -10,7 +10,7 @@ from model_eval import supervised_eval as se
 def baseline_data(dataset,d1,d2,option):
     
     #load tickers data
-    F, IT, C, I = ut.load_ticker_data(dataset)
+    F, IT, C, I,tickers = ut.load_ticker_data(dataset)
     
     #construct y labels
     F_y, IT_y, C_y, I_y = ut.construct_y(F, IT, C, I)
@@ -22,10 +22,15 @@ def baseline_data(dataset,d1,d2,option):
     I_X = fg.get_basic_records(I, d1, d2, option)
     
     #finalize train and test data
-    X, y = ut.finalize_data(F_X,IT_X,C_X,I_X,
-                            F_y,IT_y,C_y,I_y)
+    X, y,z = ut.finalize_data(F_X,IT_X,C_X,I_X,
+                              F_y,IT_y,C_y,I_y,
+                              tickers)
 
-    return X, y
+    X = X.astype(float)
+    y = y.astype(float)
+    y = y.astype(int)
+
+    return X, y,z
 
 
 def baseline_model(X_train,y_train,X_test,y_test):
@@ -39,8 +44,8 @@ def baseline_model(X_train,y_train,X_test,y_test):
 def main(option):
     d1 = datetime.datetime(2005, 1, 1)
     d2 = datetime.datetime(2014, 12, 31)
-    train_X,train_y = baseline_data("training",d1,d2,option)
-    test_X,test_y = baseline_data("validation",d1,d2,option)
+    train_X,train_y,train_tickers = baseline_data("training",d1,d2,option)
+    test_X,test_y,test_tickers = baseline_data("validation",d1,d2,option)
     predicted = baseline_model(train_X, train_y, test_X, test_y)
     se.evaluate_matrix(test_y,predicted)
 
