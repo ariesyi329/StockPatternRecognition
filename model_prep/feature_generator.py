@@ -24,7 +24,7 @@ def get_basic_records(tickers, d1, d2, option):
 
     """
     
-    quotes = [finance.quotes_historical_yahoo(ticker, d1, d2, asobject=True) for ticker in tickers]
+    quotes = [finance.quotes_historical_yahoo_ochl(ticker, d1, d2, asobject=True) for ticker in tickers]
     
     if option == "open":
         results = np.array([q.open for q in quotes]).astype(np.float) 
