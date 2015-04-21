@@ -6,6 +6,7 @@ sys.path.append(os.path.join(os.path.dirname("__file__"), '..'))
 from model_prep import feature_generator as fg
 from model_prep import data_util as ut
 from model_eval import supervised_eval as se
+from sklearn.svm import LinearSVC
 
 def baseline_data(dataset,d1,d2,option):
     
@@ -35,9 +36,19 @@ def baseline_data(dataset,d1,d2,option):
 
 def baseline_model(X_train,y_train,X_test,y_test):
     
-    neigh = KNeighborsClassifier(n_neighbors=1)
-    neigh.fit(X_train, y_train)
-    predicted = neigh.predict(X_test)
+    print X_train.shape
+
+    feature_selection = LinearSVC(C=1, penalty="l1", dual=False)
+    X_train_new = feature_selection.fit_transform(X_train, y_train)
+    X_test_new = feature_selection.transform(X_test)
+
+    
+    print X_train_new.shape
+    print X_test_new.shape
+
+    neigh = KNeighborsClassifier(n_neighbors=1, p=1)
+    neigh.fit(X_train_new, y_train)
+    predicted = neigh.predict(X_test_new)
     
     return predicted
 
