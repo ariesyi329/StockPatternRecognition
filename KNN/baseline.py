@@ -46,7 +46,7 @@ def baseline_model(X_train,y_train,X_test,y_test):
     print X_train_new.shape
     print X_test_new.shape
 
-    neigh = KNeighborsClassifier(n_neighbors=1, p=1)
+    neigh = KNeighborsClassifier(n_neighbors=4, p=1)
     neigh.fit(X_train_new, y_train)
     predicted = neigh.predict(X_test_new)
     
